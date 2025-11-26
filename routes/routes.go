@@ -15,7 +15,7 @@ import (
 )
 
 func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.Client) {
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/v1", func(c *fiber.Ctx) error {
 		raw, err := sosService.GetRaw()
 		if err != nil {
 			return c.Status(502).JSON(fiber.Map{
@@ -26,7 +26,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		return c.Send(raw)
 	})
 
-	app.Get("/health", func(c *fiber.Ctx) error {
+	app.Get("/v1/health", func(c *fiber.Ctx) error {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
@@ -36,7 +36,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		return c.JSON(fiber.Map{"status": "ok"})
 	})
 
-	app.Get("/province/:name", func(c *fiber.Ctx) error {
+	app.Get("/v1/province/:name", func(c *fiber.Ctx) error {
 		name := decodeParam(c.Params("name"))
 		if strings.TrimSpace(name) == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "province is required"})
@@ -60,7 +60,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		})
 	})
 
-	app.Get("/district/:name", func(c *fiber.Ctx) error {
+	app.Get("/v1/district/:name", func(c *fiber.Ctx) error {
 		name := decodeParam(c.Params("name"))
 		if strings.TrimSpace(name) == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "district is required"})
@@ -84,7 +84,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		})
 	})
 
-	app.Get("/subdistrict/:name", func(c *fiber.Ctx) error {
+	app.Get("/v1/subdistrict/:name", func(c *fiber.Ctx) error {
 		name := decodeParam(c.Params("name"))
 		if strings.TrimSpace(name) == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "subdistrict is required"})
@@ -108,7 +108,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		})
 	})
 
-	app.Get("/area_summary", func(c *fiber.Ctx) error {
+	app.Get("/v1/area_summary", func(c *fiber.Ctx) error {
 		data, err := sosService.GetSOS()
 		if err != nil {
 			return c.Status(502).JSON(fiber.Map{
@@ -128,7 +128,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		})
 	})
 
-	app.Get("/priority", func(c *fiber.Ctx) error {
+	app.Get("/v1/priority", func(c *fiber.Ctx) error {
 		data, err := sosService.GetSOS()
 		if err != nil {
 			return c.Status(502).JSON(fiber.Map{
@@ -176,7 +176,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		})
 	})
 
-	app.Get("/south", func(c *fiber.Ctx) error {
+	app.Get("/v1/south", func(c *fiber.Ctx) error {
 		data, err := sosService.GetSOS()
 		if err != nil {
 			return c.Status(502).JSON(fiber.Map{
@@ -192,7 +192,7 @@ func RegisterRoutes(app *fiber.App, sosService services.SOSService, rdb *redis.C
 		})
 	})
 
-	app.Get("/area_summary/south", func(c *fiber.Ctx) error {
+	app.Get("/v1/area_summary/south", func(c *fiber.Ctx) error {
 		data, err := sosService.GetSOS()
 		if err != nil {
 			return c.Status(502).JSON(fiber.Map{

@@ -16,15 +16,15 @@ Reverse-proxy + cache for flood assistance data in Hatyai. Built with Go (Fiber)
 Check status: `curl http://localhost/health`
 
 ## Endpoints
-- `GET /` : return the raw feed from upstream (or cache) as-is
-- `GET /health` : Redis check (200 = ok, 503 = down)
-- `GET /province/:name` : filter items by province name
-- `GET /district/:name` : filter by district
-- `GET /subdistrict/:name` : filter by subdistrict
-- `GET /area_summary` : summary counts of provinces/districts/subdistricts
-- `GET /priority` : urgency ranking (southern region only). Query params: `priority_level` (`critical|high|medium|low|all`) and `limit` (number of items)
-- `GET /south` : items in the southern region only (by coordinates and province list)
-- `GET /area_summary/south` : area summary limited to the southern region
+- `GET /v1` : return the raw feed from upstream (or cache) as-is
+- `GET /v1/health` : Redis check (200 = ok, 503 = down)
+- `GET /v1/province/:name` : filter items by province name
+- `GET /v1/district/:name` : filter by district
+- `GET /v1/subdistrict/:name` : filter by subdistrict
+- `GET /v1/area_summary` : summary counts of provinces/districts/subdistricts
+- `GET /v1/priority` : urgency ranking (southern region only). Query params: `priority_level` (`critical|high|medium|low|all`) and `limit` (number of items)
+- `GET /v1/south` : items in the southern region only (by coordinates and province list)
+- `GET /v1/area_summary/south` : area summary limited to the southern region
 
 > You can use Thai or English names, e.g. `/province/Songkhla` or `/province/songkhla`. If the name has spaces, URL-encode with `%20` or use `+`.
 
@@ -32,7 +32,7 @@ Check status: `curl http://localhost/health`
 
 ### 1) Health check
 ```bash
-curl http://localhost/health
+curl http://localhost/v1/health
 ```
 ```json
 {"status":"ok"}
@@ -40,7 +40,7 @@ curl http://localhost/health
 
 ### 2) Raw feed (truncated)
 ```bash
-curl http://localhost/
+curl http://localhost/v1
 ```
 ```json
 {
@@ -81,7 +81,7 @@ curl http://localhost/
 
 ### 3) Filter by province
 ```bash
-curl http://localhost/province/songkhla
+curl http://localhost/v1/province/songkhla
 ```
 ```json
 {
@@ -101,7 +101,7 @@ curl http://localhost/province/songkhla
 
 ### 4) Priority list (south only)
 ```bash
-curl "http://localhost/priority?limit=2&priority_level=critical"
+curl "http://localhost/v1/priority?limit=2&priority_level=critical"
 ```
 ```json
 {
@@ -128,7 +128,7 @@ curl "http://localhost/priority?limit=2&priority_level=critical"
 
 ### 5) Area summary
 ```bash
-curl http://localhost/area_summary
+curl http://localhost/v1/area_summary
 ```
 ```json
 {
