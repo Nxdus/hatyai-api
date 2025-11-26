@@ -2,6 +2,10 @@
 
 This document provides instructions for using the Hatyai Flood SOS API to access flood assistance data.
 
+## Base URL
+
+- Live: https://flood.clustra.tech/
+
 ## Endpoints
 
 - `GET /v1`: Returns the raw, unfiltered data feed from the upstream source.
