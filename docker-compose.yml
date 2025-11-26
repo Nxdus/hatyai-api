@@ -29,7 +29,7 @@ services:
     image: redis:8.4-bookworm
     container_name: hatyai-redis
     ports:
-      - "6379:6379"
+      - "6379"
     restart: unless-stopped
 
   nginx:
@@ -41,5 +41,5 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - "80:80"
+      - "9091:80"
     restart: unless-stopped
