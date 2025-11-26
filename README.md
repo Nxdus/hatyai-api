@@ -66,7 +66,7 @@ This example fetches the top 2 items with a `critical` priority level.
 - จำกัดคะแนนให้อยู่ระหว่าง 0-100 แล้วแปลงเป็น `priority_level`: critical ≥ 75, high ≥ 55, medium ≥ 35, นอกนั้นเป็น low
 
 ```bash
-curl "http://localhost/priority?limit=2&priority_level=critical"
+curl "http://localhost/v1/priority?limit=2&priority_level=critical"
 ```
 
 ```json

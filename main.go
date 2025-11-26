@@ -23,8 +23,12 @@ func main() {
 	}
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr: redisAddr,
-		DB:   0,
+		Addr:         redisAddr,
+		DB:           0,
+		PoolSize:     32,
+		MinIdleConns: 8,
+		ReadTimeout:  500 * time.Millisecond,
+		WriteTimeout: 500 * time.Millisecond,
 	})
 	defer rdb.Close()
 
@@ -48,7 +52,20 @@ func main() {
 		}
 	}()
 
+	startCacheRefresher(sosService, 45*time.Second)
+
 	routes.RegisterRoutes(app, sosService, rdb)
 
 	log.Fatal(app.Listen(":3000"))
+}
+
+func startCacheRefresher(s services.SOSService, interval time.Duration) {
+	ticker := time.NewTicker(interval)
+	go func() {
+		for range ticker.C {
+			if _, err := s.GetRaw(); err != nil {
+				log.Printf("background refresh failed: %v", err)
+			}
+		}
+	}()
 }
